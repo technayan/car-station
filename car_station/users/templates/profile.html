@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center mt-5 mb-3">Profile</h3>
+
+    <h4>Welcome {{ request.user.first_name }} {{ request.user.last_name }}</h4>
+
+    <a href={% url "edit-profile" %} class="btn btn-info my-4 me-2">Edit Profile</a>
+    <a href={% url "change-password" %} class="btn btn-info my-4">Change Password</a>
+
+    <div class="row g-3 mb-5">
+        {% if cars %}
+            {% for car in cars %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-img-wrapper p-3 d-flex justify-content-center align-items-center" style="height: 216px">
+                        <img src={{ car.image.url }} class="card-img-top w-100" alt={{ car.name }}>
+                    </div>
+                    <div class="card-body">
+                    <h4 class="card-title">{{ car.name }}</h4>
+                    <p class="card-text mb-0">Price: <strong>${{ car.price | floatformat:2 | intcomma }}</strong></p>
+                    <p class="card-text">Brand: <strong>{{ car.brand }}</strong></p>
+                    <a href={% url "car_details" car.id %} class="btn btn-info">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-black-50">There is no order.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="banner-area">
+        <div class="row" style="height: 80vh">
+            <div class="col-md-6 d-flex align-items-center h-100">
+                <div class="banner-text">
+                    <h1><span class="text-info fw-bold" style="font-size: 50px;">CarStation-</span><br> Find Your Dream Car.</h1>
+                    <p class="mt-3">CarStation provides branded luxurious cars. You can have your dream car from us. We provide the best after sale customer service. You will get the best ever deals here compared to the market.</p>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex align-items-center h-100">
+                <img src={% static "images/cars.jpg" %} alt="Cars" class="w-100 rounded-5">
+            </div>
+        </div>
+    </div>
+
+    <div class="brands-area mt-5">
+        <a href={% url "home" %} class="me-3 btn {% if slug == None %}bg-info{% endif %}" style="background: rgba(0,0,0,0.1)">All</a>
+        {% for brand in brands %}
+            <a href={% url "brand_wise_car" brand.slug %} class="me-3 btn {% if slug == brand.slug %}bg-info{% endif %}" style="background: rgba(0,0,0,0.1)">{{ brand.name }}</a>
+        {% endfor %}
+    </div>
+
+    <h5 class="my-4">Total Car Found: {{ cars | length }}</h5>
+
+    <div class="row g-3 mb-5">
+        {% for car in cars %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-img-wrapper p-3 d-flex justify-content-center align-items-center" style="height: 216px">
+                    <img src={{ car.image.url }} class="card-img-top w-100" alt={{ car.name }}>
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">{{ car.name }}</h4>
+                  <p class="card-text mb-0">Price: <strong>${{ car.price | floatformat:2 | intcomma }}</strong></p>
+                  <p class="card-text">Brand: <strong>{{ car.brand }}</strong></p>
+                  <a href={% url "car_details" car.id %} class="btn btn-info">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
